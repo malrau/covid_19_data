@@ -5,6 +5,10 @@
 #I also build interesting variables, such as the shares of contagions, deaths, etc.
 options(scipen=999) #This will prevent scientific notation in plots' axes
 setwd("~/github/covid_19_data")
+covid_data <- read.delim("covid_data.csv",sep=",",header=T) #This is my dataset
+
+regions <- levels(covid_reg$denominazione_regione)
+
 
 italia <- subset(covid_data,covid_data$denominazione_regione=="Italia")
 n <- length(italia$date) #convenient, because it represents the number of observations
@@ -292,93 +296,3 @@ write.csv(cbind(date[n],latest1[order(latest1$totale_casi),]),"tab_prot_civile.c
 ############################
 ############################
 ############################
-
-###Analysis of the data for Italy###
-###Comparing the curve of total cases in Italy to an exponential curve
-x <- c(1:length(italia$date))
-plot(totale_casi~x,italia,type="l",col="black",xlab="Data",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia")
-lines(x^3.3) #Exponential compatible with the Italian curve
-
-###Components of total cases - Lines
-jpeg('totale_casi.jpg')
-marks <- c(0,20000,50000,100000) #These are marks that I want to force in the y axis instead of the defaults drawn by R
-plot(totale_casi~date,italia,type="l",col="#0033CC",yaxt="n",xlab="Data",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia")
-axis(2,at=marks,labels=marks) #The axis function draws the marks and labels that I have set before
-abline(h=c(0,20000,50000,100000),v=italia$date[c(14,19,28)],col=c("grey")) #Horizontal lines where the marks are drawn, and vertical ones for specific dates
-lines(totale_positivi~date,italia,type="l",pch=20,col="#CC0099")
-lines(dimessi_guariti~date,italia,type="l",pch=1,col="#009933")
-lines(deceduti~date,italia,type="l",pch=20,col="#CC0000")
-legend("topleft",legend=c("Totale casi","Totale positivi","Guariti","Deceduti"),col=c("#0033CC","#CC0099","#009933","#CC0000"),box.lty=0,lty=1,cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
-dev.off()
-
-###Components of total cases - Barplot + line
-#Here the bars are stacked, so that the final height represents the number of total cases (and I draw the relative line to mark it)
-barplot(as.matrix(italia[,c(11,14,15)])~date,xlab="Data",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia") #I treat the data of interest as a matrix, because it allows me to draw a stacked barplot)
-barplot_casi <- barplot(as.matrix(italia[,c(14,15,11)])~italia$date,xaxt="n",xlab="Data",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia") #I treat the data of interest as a matrix, because it allows me to draw a stacked barplot). I also give the barplot a name so that I can use it afterwards, to draw the juxtaposed line over the correct bars in the barplot
-lines(x=barplot_casi,y=italia$totale_casi)
-axis(1,at=utili,labels=italia$date[utili])
-
-###Deaths, intensive care and recoverings
-jpeg('guariti_deceduti.jpg')
-marks <- c(0,5000,10000,15000) #These are marks that I want to force in the y axis instead of the defaults drawn by R
-plot(terapia_intensiva~date,italia,type="l",col="#FF6633",ylim=c(0,max(italia$dimessi_guariti)),xlab="Data",ylab="",main="Curve di ricoverati in terapia intensiva, \nguariti e morti di Coronavirus (COVID-19) in Italia")
-axis(2,at=marks,labels=marks) #The axis function draws the marks and labels that I have set before
-abline(h=c(0,5000,10000,15000),v=italia$date[c(7,21,38)],col=c("grey")) #Horizontal lines where the marks are drawn, and vertical ones for specific dates
-lines(dimessi_guariti~date,italia,type="l",pch=20,col="#009933")
-lines(deceduti~date,italia,type="l",pch=20,col="#CC0000")
-legend("topleft",legend=c("Terapia intensiva","Guariti","Deceduti"),col=c("#FF6633","#009933","#CC0000"),box.lty=0,lty=1,cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
-dev.off()
-
-plot(totale_positivi~date,italia,type="l",col="#FF6633",ylim=c(0,max(italia$totale_positivi)),xlab="Data",ylab="",main="Curve di ricoverati in terapia intensiva, \nguariti e morti di Coronavirus (COVID-19) in Italia")
-
-
-plot(growth_it,type="l")
-plot(nuovi_positivi~date,italia,type="l")
-plot(terapia_intensiva~date,italia,type="l")
-plot(deceduti~date,italia,type="l")
-
-plot(ts(italia$totale_positivi,1,length(levels(italia$date_new)))) #Italy: plot of total contagions treating the data as time series
-plot(ts(italia$nuovi_positivi,1,length(levels(italia$date_new)))) #Italy: plot of new contagions treating the data as time series
-growth_it <- diff(italia$totale_positivi)/italia$totale_positivi[1:(length(italia$totale_positivi)-1)] #Growth rate of contagions
-plot(growth_it,type="l")
-plot(italia$deceduti,type="l") #Italy: plot of deceased
-plot(growth_d_it,type="l")
-share_ic <- round(italia$terapia_intensiva/italia$totale_positivi,2) #Persons in intensive care as a percentage of total contagions (also counting deaths)
-plot(share_ic,type="l")
-
-
-#Regional data analysis
-regions <- levels(covid_reg$denominazione_regione)
-
-#Comparing actual contagions in various regions 
-plot(totale_positivi~date,italia,type="b",pch=20,col="green",ylim=c(0,90000),ylab=("Attualmente contagiati"),xlab="Data")
-lines(totale_positivi~date,lombardia,type="b",pch=10,col="red")
-lines(totale_positivi~date,veneto,type="b",pch=1,col="orange")
-lines(totale_positivi~date,e_romagna,type="b",pch="*",col="black")
-lines(totale_positivi~date,sicilia,type="b",pch=18,col="blue")
-grid(nx=NA,ny=NULL,col="light grey",lty=1)
-abline(h=latest_italia$totale_positivi,col="purple")
-
-#Comparing total contagions in various regions 
-plot(totale_casi~date,italia,type="b",pch=20,col="green",ylim=c(0,100000),ylab=("Totale casi"),xlab="Data")
-lines(totale_casi~date,lombardia,type="b",pch=10,col="red")
-lines(totale_casi~date,veneto,type="b",pch=1,col="orange")
-lines(totale_casi~date,e_romagna,type="b",pch="*",col="black")
-lines(totale_casi~date,sicilia,type="b",pch=18,col="blue")
-grid(nx=NA,ny=NULL,col="light grey",lty=1)
-abline(h=latest_italia$totale_casi,col="purple")
-
-#Comparing the growth rate of contagions in various regions
-plot(growth_it,type="b",pch=20,col="green")
-abline(h=mean(growth_it),lty=3) #dotted line at the mean growth of contagions
-lines(growth_lom,type="b",pch=10,col="red")
-lines(growth_ven,type="b",pch=1,col="orange")
-lines(growth_erom,type="b",pch="*",col="black")
-lines(growth_sic,type="b",pch=18,col="blue")
-grid(nx=NA,ny=NULL,col="light grey",lty=1)
-
-
-table(sicilia$totale_positivi)
-plot(ts(lombardia$totale_positivi,1,length(levels(italia$date_new)))) #Lombardia plot treating the data as time series
-plot(ts(lombardia$nuovi_positivi,1,length(levels(italia$date_new)))) #Lombardia plot treating the data as time series
-
