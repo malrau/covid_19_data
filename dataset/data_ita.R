@@ -26,7 +26,7 @@ covid_data$esodo1 <- as.numeric(italia$date=="2020-03-08") #First coming back of
 covid_data$esodo2 <- as.numeric(italia$date=="2020-03-13") #Second coming back of people from Northern Italy to the South (following the DPCM rendering the whole country "Zona rossa" and shutting down economic activities)
 covid_data$esodo3 <- as.numeric(italia$date=="2020-03-22") #Third coming back of people from Northern Italy to the South (following the Ordinanza dei Ministeri della Salute e dell'Interno forbidding movements between Comuni and the DPCM shutting down further economic activities. Note that, as for Sicily, the number of people moving to the South has been lower by 70% than in previous exoduses)
 plot(covid_data$date,covid_data$totale_positivi) #General plot (Italy and regions)
-write.csv(covid_data,"covid_data.csv",row.names=F) #I save the dataframe as a .csv file
+write.csv(covid_data,"covid_data.csv",row.names=F) #I save the dataframe as a .csv file. I added the 'row.names=F' option which became necessary to avoid generating an empty first column in the generated file (that column represents row names)
 ############################
 ############################
 ############################
