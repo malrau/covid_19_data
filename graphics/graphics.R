@@ -12,6 +12,7 @@ covid_data$date <- as.Date(covid_data$date)
 italia <- subset(covid_data,covid_data$denominazione_regione=="Italia")
 n <- length(italia$date) #convenient, because it represents the number of observations
 italia$growth_tot <- c(0,diff(italia$totale_casi)/italia$totale_casi[1:n-1]) #Growth rate of total cases
+italia$nuovi_terapia_intensiva <- c(0,diff(italia$terapia_intensiva))
 italia$growth_ter_int <- c(0,diff(italia$terapia_intensiva)/italia$terapia_intensiva[1:n-1]) #Growth rate of intensive care
 italia$nuovi_deceduti <- c(0,diff(italia$deceduti))
 italia$growth_dec <- c(0,diff(italia$deceduti)/italia$deceduti[1:n-1]) #Growth rate of deceased
@@ -262,23 +263,35 @@ jpeg('totale_bar.jpg')
 #Here the bars are stacked, so that the final height represents the number of total cases (and I draw the relative line to mark it)
 bar_colours <- c("#FF6633","#33FF66","#3399FF")
 barplot(as.matrix(italia[,c(11,14,15)])~italia$date,xaxt="n",yaxt="n",xlab="Data",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia") #I treat the data of interest as a matrix, because it allows me to draw a stacked barplot)
-barplot_casi <- barplot(as.matrix(italia[,c(14,15,11)])~italia$date,col=bar_colours,xaxt="n",yaxt="n",xlab="",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia") #I treat the data of interest as a matrix, because it allows me to draw a stacked barplot). I also give the barplot a name so that I can use it afterwards, to draw the juxtaposed line over the correct bars in the barplot
+barplot_casi <- barplot(as.matrix(italia[,c(15,14,11)])~italia$date,col=bar_colours,xaxt="n",yaxt="n",xlab="",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia") #I treat the data of interest as a matrix, because it allows me to draw a stacked barplot). I also give the barplot a name so that I can use it afterwards, to draw the juxtaposed line over the correct bars in the barplot
 lines(x=barplot_casi,y=italia$totale_casi,col="#FF00CC")
 axis(2,at=marks,labels=marks,cex.axis=.7) #The axis function draws the marks and labels that I have set before
 utili <- barplot_casi
 axis(1,at=utili,labels=italia$date,gap.axis=.5,las=2,cex.axis=.7)
-legend("topleft",legend=c("Guariti","Deceduti","Totale positivi","Totale casi"),col=c("#FF6633","#33FF66","#3399FF","#FF00CC"),box.lty=0,lty=c(5,5,5,1),lwd=c(4,4,4,1),cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
+legend("topleft",legend=c("Deceduti","Guariti","Totale positivi","Totale casi"),col=c("#FF6633","#33FF66","#3399FF","#FF00CC"),box.lty=0,lty=c(5,5,5,1),lwd=c(4,4,4,1),cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
 dev.off()
 
 ###Deaths, intensive care and recoverings
 jpeg('guariti_deceduti.jpg')
-marks <- c(0,5000,10000,15000) #These are marks that I want to force in the y axis instead of the defaults drawn by R
+marks_2 <- c(0,5000,15000,30000,45000) #These are marks that I want to force in the y axis instead of the defaults drawn by R
 plot(terapia_intensiva~date,italia,type="l",col="#FF6633",ylim=c(0,max(italia$dimessi_guariti)),xlab="Data",ylab="",main="Curve di ricoverati in terapia intensiva, \nguariti e morti di Coronavirus (COVID-19) in Italia")
-axis(2,at=marks,labels=marks) #The axis function draws the marks and labels that I have set before
-abline(h=c(0,5000,10000,15000),v=italia$date[c(7,21,38)],col=c("grey")) #Horizontal lines where the marks are drawn, and vertical ones for specific dates
+axis(2,at=marks_2,labels=marks_2) #The axis function draws the marks and labels that I have set before
+abline(h=c(0,5000,15000,30000,45000),v=italia$date[c(7,21,38,52)],col=c("grey")) #Horizontal lines where the marks are drawn, and vertical ones for specific dates
 lines(dimessi_guariti~date,italia,type="l",pch=20,col="#009933")
 lines(deceduti~date,italia,type="l",pch=20,col="#CC0000")
 legend("topleft",legend=c("Terapia intensiva","Guariti","Deceduti"),col=c("#FF6633","#009933","#CC0000"),box.lty=0,lty=1,cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
+dev.off()
+
+###Daily cases, deaths, intensive care and recoverings
+jpeg('nuovi_guariti_deceduti.jpg')
+marks_3 <- seq(0,6000,500) #These are marks that I want to force in the y axis instead of the defaults drawn by R
+plot(nuovi_positivi~date,italia,type="l",col="#3399FF",yaxt="n",ylim=c(0,max(italia$nuovi_positivi)),xlab="Data",ylab="",main="Curve di ricoverati in terapia intensiva, \nguariti e morti di Coronavirus (COVID-19) in Italia")
+axis(2,at=marks_3,labels=marks_3) #The axis function draws the marks and labels that I have set before
+abline(h=marks_3,v=italia$date[c(7,21,38,52)],col=c("grey")) #Horizontal lines where the marks are drawn, and vertical ones for specific dates
+lines(nuovi_guariti~date,italia,type="l",pch=20,col="#33FF66")
+lines(nuovi_deceduti~date,italia,type="l",pch=20,col="#FF6633")
+lines(nuovi_terapia_intensiva~date,italia,type="l",pch=20,col="#CC9933")
+legend("topleft",legend=c("Nuovi positivi","Nuovi guariti","Nuovi deceduti","Nuovi ricoveri in terapia intensiva"),col=c("#3399FF","#33FF66","#FF6633","#CC9933"),box.lty=0,lty=1,cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
 dev.off()
 
 plot(totale_positivi~date,italia,type="l",col="#FF6633",ylim=c(0,max(italia$totale_positivi)),xlab="Data",ylab="",main="Curve di ricoverati in terapia intensiva, \nguariti e morti di Coronavirus (COVID-19) in Italia")
