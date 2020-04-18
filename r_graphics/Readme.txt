@@ -1,0 +1,1 @@
+This folder is dedicated to the generation of useful plots. It uses the dataset in the main folder (covid_data.csv)
