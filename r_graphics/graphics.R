@@ -264,7 +264,7 @@ jpeg('totale_bar.jpg')
 bar_colours <- c("#FF6633","#33FF66","#3399FF")
 barplot(as.matrix(italia[,c(11,14,15)])~italia$date,xaxt="n",yaxt="n",xlab="Data",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia") #I treat the data of interest as a matrix, because it allows me to draw a stacked barplot)
 barplot_casi <- barplot(as.matrix(italia[,c(15,14,11)])~italia$date,col=bar_colours,xaxt="n",yaxt="n",xlab="",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia") #I treat the data of interest as a matrix, because it allows me to draw a stacked barplot). I also give the barplot a name so that I can use it afterwards, to draw the juxtaposed line over the correct bars in the barplot
-lines(x=barplot_casi,y=italia$totale_casi,col="#FF00CC")
+lines(x=barplot_casi,y=italia$totale_casi,lty=1,lwd=2,col="#FF00CC")
 axis(2,at=marks,labels=marks,cex.axis=.7) #The axis function draws the marks and labels that I have set before
 utili <- barplot_casi
 axis(1,at=utili,labels=italia$date,gap.axis=.5,las=2,cex.axis=.7)
