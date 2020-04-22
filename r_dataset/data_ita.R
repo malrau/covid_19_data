@@ -6,7 +6,7 @@ setwd("~/github/covid_19_data")
 covid_ita1 <- read.delim("dati-andamento-nazionale/dpc-covid19-ita-andamento-nazionale.csv",sep=",",header=T) #This is the file containing the data for the whole country. I use it as data frame
 new_columns <- data.frame(codice_regione=0,denominazione_regione="Italia",lat=41.8719,long=12.5674) #These columns are present in the file containing the data for the Italian regions.
 covid_ita2 <- cbind(covid_ita1,new_columns) #I attach them here too, because otherwise I would have problems merging the two datasets
-covid_ita3 <- covid_ita2[,c(1,2,16,17,18,19,3,4,5,6,7,8,9,10,11,12,13)] #Here I put the columns in the correct order (the same order as for the regional data frame) and I remove the new variables "note_it" and "note_en"
+covid_ita3 <- covid_ita2[,c(1,2,17,18,19,20,3,4,5,6,7,8,9,10,11,12,13,14)] #Here I put the columns in the correct order (the same order as for the regional data frame) and I remove the new variables "note_it" and "note_en"
 str(covid_ita3) #the "data" and "stato" variables are factors. I need to convert the "data" variable in date format.
 date <- as.Date(covid_ita1$data,format="%Y-%m-%d")
 covid_ita4 <- covid_ita3[,2:(length(covid_ita3))] #I remove the old date variable from the data frame
