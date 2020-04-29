@@ -294,7 +294,7 @@ lines(nuovi_terapia_intensiva~date,italia,type="l",pch=20,col="#CC9933")
 legend("topleft",legend=c("Nuovi positivi","Nuovi guariti","Nuovi deceduti","Nuovi ricoveri in terapia intensiva"),col=c("#3399FF","#33FF66","#FF6633","#CC9933"),box.lty=0,lty=1,cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
 dev.off()
 
-plot(totale_positivi~date,italia,type="l",col="#FF6633",ylim=c(0,max(italia$totale_positivi)),xlab="Data",ylab="",main="Curve di ricoverati in terapia intensiva, \nguariti e morti di Coronavirus (COVID-19) in Italia")
+plot(totale_positivi~date,italia,type="l",col="#FF6633",ylim=c(0,max(italia$totale_positivi)),xlab="Data",ylab="",main="Curve del totali casi positivi al COronavirus (COVID-19) in Italia")
 
 
 plot(growth_tot~date,italia,type="l")
