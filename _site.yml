@@ -8,4 +8,8 @@ navbar:
       href: tables.html
     - text: "Various plots"
       href: plots.html
-
+output:
+html_document:
+  toc: true
+  toc_float: true
+  highlight: textmate

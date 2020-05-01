@@ -1,1 +1,0 @@
-The folders "dati-andamento-nazionale", dati-province" and "dati-regioni" are exact copies of the data distributed by the Italian presidenza del Consiglio dei Ministri and are available at the Github repository: https://github.com/pcm-dpc/COVID-19.

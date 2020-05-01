@@ -1,1 +1,0 @@
-This project aims to let me "play" with the data on the Coronavirus disease that has spread around the world in 2020, starting from China on January (or, possibly, since December 2019), and hitting Italy on February. I would like to use this analysis to publish something on a brand new (un)useful website (my would-be first one).
