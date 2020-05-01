@@ -1,0 +1,11 @@
+name: "Playing with COVID-19 data"
+navbar:
+  title: "Playing with COVID-19 data"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Updated tables Protezione civile style"
+      href: tables.html
+    - text: "Various plots"
+      href: plots.html
+

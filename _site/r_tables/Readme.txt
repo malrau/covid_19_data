@@ -1,0 +1,1 @@
+This folder is dedicated to the generation of useful tables, such as the one from the Protezione civile. It uses the dataset in the main folder (covid_data.csv)
