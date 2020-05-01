@@ -2,8 +2,12 @@
 title: "COVID-19"
 author: "Maurizio La Rosa"
 date: "19/04/2020"
-output:
-  html_document: default
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
