@@ -1,0 +1,1 @@
+This folder is dedicated to host the .R code that I use to generate the Italian dataset the I use to analyse the data. I intend that it be a git branch, while the dataset will be hosted in the master.

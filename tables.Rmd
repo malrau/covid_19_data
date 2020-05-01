@@ -2,12 +2,6 @@
 title: "Tables"
 author: "Maurizio La Rosa"
 date: "01/05/2020"
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, 'tables.html'))})
-output: html_document
 ---
 
 ```{r setup, include=FALSE}
