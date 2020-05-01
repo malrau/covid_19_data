@@ -1,4 +1,5 @@
 name: "Playing with COVID-19 data"
+output_dir: "docs"
 navbar:
   title: "Playing with COVID-19 data"
   left:
@@ -13,3 +14,4 @@ html_document:
   toc: true
   toc_float: true
   highlight: textmate
+  theme: cosmo
