@@ -294,7 +294,11 @@ latest1 <- rbind(latest_abruzzo,latest_basilicata,latest_calabria,latest_campani
                  latest_fv_giulia,latest_lazio,latest_liguria,latest_lombardia,latest_marche,latest_molise,
                  latest_bolzano,latest_trento,latest_piemonte,latest_puglia,latest_sardegna,latest_sicilia,
                  latest_toscana,latest_umbria,latest_v_aosta,latest_veneto,latest_italia)
-write.csv(cbind(date[n],latest1[order(latest1$totale_casi),]),"tab_prot_civile.csv")
+latest2 <- cbind(date[n],latest1[order(latest1$totale_casi),])
+names(latest2) <- c("Data","Regione","Totale positivi","Guariti","Deceduti","Totale casi","Tamponi effettuati")
+names(latest1)
+names(latest2)
+write.csv(latest2,"tab_prot_civile.csv")
 ############################
 ############################
 ############################
