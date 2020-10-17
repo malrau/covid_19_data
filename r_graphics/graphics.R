@@ -228,6 +228,7 @@ veneto$share_tot <- veneto$totale_casi/italia$totale_casi
 veneto$share_new <- veneto$nuovi_positivi/italia$nuovi_positivi
 veneto$share_ter_int <- veneto$terapia_intensiva/italia$terapia_intensiva
 veneto$share_dec <- veneto$deceduti/italia$deceduti
+
 ############################
 ############################
 ############################
@@ -350,3 +351,70 @@ table(sicilia$totale_positivi)
 plot(ts(lombardia$totale_positivi,1,length(levels(italia$date_new)))) #Lombardia plot treating the data as time series
 plot(ts(lombardia$nuovi_positivi,1,length(levels(italia$date_new)))) #Lombardia plot treating the data as time series
 
+
+############################
+########MACRO AREAS#########
+############################
+regioni_nord <- data.frame(rbind(liguria,lombardia,piemonte,v_aosta,veneto,bolzano,trento,fv_giulia,e_romagna))
+regioni_centro <- data.frame(rbind(lazio,marche,toscana,umbria))
+regioni_sud <- data.frame(rbind(abruzzo,basilicata,calabria,campania,molise,puglia,sardegna,sicilia))
+
+#I create matrices that have italian regions in the columns, one matrix per variable.
+#Then I use the formula "rowSums" to sum the elements across the rows of the matrix.
+#Each row represents the data for each region included in the matrix for a specific date.
+#By doing so I end up with a vector with the data for each one of the three macro-regions of Italy.
+
+date <- as.Date(italia$date,origin="1970-01-01")
+
+#Totale positivi
+pos_matrix1 <- matrix(regioni_nord$totale_positivi,length(date)) #North
+tot_pos_nord <- as.data.frame(cbind(date,rowSums(pos_matrix1)))
+names(tot_pos_nord) <- c("date","tot_pos_nord")
+pos_matrix2 <- matrix(regioni_centro$totale_positivi,length(date)) #Centre
+tot_pos_centro <- as.data.frame(cbind(date,rowSums(pos_matrix2)))
+names(tot_pos_centro) <- c("date","tot_pos_centro")
+pos_matrix3 <- matrix(regioni_sud$totale_positivi,length(date)) #South
+tot_pos_sud <- as.data.frame(cbind(date,rowSums(pos_matrix3)))
+names(tot_pos_sud) <- c("date","tot_pos_sud")
+
+#Dimessi guariti
+guar_matrix1 <- matrix(regioni_nord$dimessi_guariti,length(date)) #North
+guar_nord <- as.data.frame(cbind(date,rowSums(guar_matrix1)))
+names(guar_nord) <- c("date","guar_nord")
+guar_matrix2 <- matrix(regioni_centro$dimessi_guariti,length(date)) #Centre
+guar_centro <- as.data.frame(cbind(date,rowSums(guar_matrix2)))
+names(guar_centro) <- c("date","guar_centro")
+guar_matrix3 <- matrix(regioni_sud$dimessi_guariti,length(date)) #South
+guar_sud <- as.data.frame(cbind(date,rowSums(guar_matrix3)))
+names(guar_sud) <- c("date","guar_sud")
+
+#Deceduti
+dec_matrix1 <- matrix(regioni_nord$deceduti,length(date)) #North
+dec_nord <- as.data.frame(cbind(date,rowSums(dec_matrix1)))
+names(dec_nord) <- c("date","dec_nord")
+dec_matrix2 <- matrix(regioni_centro$deceduti,length(date)) #Centre
+dec_centro <- as.data.frame(cbind(date,rowSums(dec_matrix2)))
+names(dec_centro) <- c("date","dec_centro")
+dec_matrix3 <- matrix(regioni_sud$deceduti,length(date)) #South
+dec_sud <- as.data.frame(cbind(date,rowSums(dec_matrix3)))
+names(dec_sud) <- c("date","dec_sud")
+
+
+#Totale positivi
+plot(tot_pos_nord$date,tot_pos_nord$tot_pos_nord,type="l",col="blue")
+lines(as.Date(tot_pos_centro$date),tot_pos_centro$tot_pos_centro,col="green")
+lines(as.Date(tot_pos_sud$date),tot_pos_sud$tot_pos_sud,col="orange")
+
+#Guariti
+plot(as.Date(guar_nord$date),guar_nord$guar_nord,type="l",col="blue")
+lines(as.Date(guar_centro$date),guar_centro$guar_centro,col="green")
+lines(as.Date(guar_sud$date),guar_sud$guar_sud,col="orange")
+
+#Deceduti
+plot(as.Date(dec_nord$date),dec_nord$dec_nord,type="l",col="blue")
+lines(as.Date(dec_centro$date),dec_centro$dec_centro,col="green")
+lines(as.Date(dec_sud$date),dec_sud$dec_sud,col="orange")
+
+############################
+############################
+############################
