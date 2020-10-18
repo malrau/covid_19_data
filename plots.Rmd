@@ -241,7 +241,7 @@ veneto$share_dec <- veneto$deceduti/italia$deceduti
 
 ```{r, echo=FALSE}
 ###Components of total cases - Lines
-marks <- c(0,50000,100000,150000,170000) #These are marks that I want to force in the y axis instead of the defaults drawn by R
+marks <- c(0,100000,200000,500000,1000000,2000000) #These are marks that I want to force in the y axis instead of the defaults drawn by R
 plot(totale_casi~date,italia,type="l",col="#0033CC",yaxt="n",xlab="Data",ylab="Numero casi di COVID-19",main="Curva dei casi di Coronavirus (COVID-19) in Italia")
 axis(2,at=marks,labels=marks) #The axis function draws the marks and labels that I have set before
 abline(h=c(0,50000,100000,150000,170000),v=italia$date[c(14,19,28)],col=c("grey")) #Horizontal lines where the marks are drawn, and vertical ones for specific dates
@@ -271,7 +271,7 @@ lines(deceduti~date,italia,type="l",pch=20,col="#CC0000")
 legend("topleft",legend=c("Terapia intensiva","Guariti","Deceduti"),col=c("#FF6633","#009933","#CC0000"),box.lty=0,lty=1,cex=0.6,inset=c(0.01,0.01)) #Adding a legend without visible box (the legend is drawn in the top-left corner of the graph region and it is displaced to the right and centre by 0.01 (the inset() option))
 
 ###Daily cases, deaths, intensive care and recoverings
-marks_3 <- seq(0,6000,500) #These are marks that I want to force in the y axis instead of the defaults drawn by R
+marks_3 <- seq(0,12000,1000) #These are marks that I want to force in the y axis instead of the defaults drawn by R
 plot(nuovi_positivi~date,italia,type="l",col="#3399FF",yaxt="n",ylim=c(0,max(italia$nuovi_positivi)),xlab="Data",ylab="",main="Curve di ricoverati in terapia intensiva, \nguariti e morti di Coronavirus (COVID-19) in Italia")
 axis(2,at=marks_3,labels=marks_3) #The axis function draws the marks and labels that I have set before
 abline(h=marks_3,v=italia$date[c(7,21,38,52)],col=c("grey")) #Horizontal lines where the marks are drawn, and vertical ones for specific dates

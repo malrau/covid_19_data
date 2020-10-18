@@ -243,33 +243,33 @@ veneto$share_dec <- veneto$deceduti/italia$deceduti
 #Latest observation of contagions (reproducing the table from Ministero della Salute: )
 Data <- as.vector(italia$date)[length(italia$date)]
 Regione <- as.vector(append(regions,"Italia"))
-latest_abruzzo <- abruzzo[n,c(4,11,14,15,16,17)]
-latest_basilicata <- basilicata[n,c(4,11,14,15,16,17)]
-latest_calabria <- calabria[n,c(4,11,14,15,16,17)]
-latest_campania <- campania[n,c(4,11,14,15,16,17)]
-latest_e_romagna <- e_romagna[n,c(4,11,14,15,16,17)]
-latest_fv_giulia <- fv_giulia[n,c(4,11,14,15,16,17)]
-latest_lazio <- lazio[n,c(4,11,14,15,16,17)]
-latest_liguria <- liguria[n,c(4,11,14,15,16,17)]
-latest_lombardia <- lombardia[n,c(4,11,14,15,16,17)]
-latest_marche <- marche[n,c(4,11,14,15,16,17)]
-latest_molise <- molise[n,c(4,11,14,15,16,17)]
-latest_bolzano <- bolzano[n,c(4,11,14,15,16,17)]
-latest_trento <- trento[n,c(4,11,14,15,16,17)]
-latest_piemonte <- piemonte[n,c(4,11,14,15,16,17)]
-latest_puglia <- puglia[n,c(4,11,14,15,16,17)]
-latest_sardegna <- sardegna[n,c(4,11,14,15,16,17)]
-latest_sicilia <- sicilia[n,c(4,11,14,15,16,17)]
-latest_toscana <- toscana[n,c(4,11,14,15,16,17)]
-latest_umbria <- umbria[n,c(4,11,14,15,16,17)]
-latest_v_aosta <- v_aosta[n,c(4,11,14,15,16,17)]
-latest_veneto <- veneto[n,c(4,11,14,15,16,17)]
-latest_italia <- italia[n,c(4,11,14,15,16,17)]
+latest_abruzzo <- abruzzo[n,c(4,11,14,15,18,19)]
+latest_basilicata <- basilicata[n,c(4,11,14,15,18,19)]
+latest_calabria <- calabria[n,c(4,11,14,15,18,19)]
+latest_campania <- campania[n,c(4,11,14,15,18,19)]
+latest_e_romagna <- e_romagna[n,c(4,11,14,15,18,19)]
+latest_fv_giulia <- fv_giulia[n,c(4,11,14,15,18,19)]
+latest_lazio <- lazio[n,c(4,11,14,15,18,19)]
+latest_liguria <- liguria[n,c(4,11,14,15,18,19)]
+latest_lombardia <- lombardia[n,c(4,11,14,15,18,19)]
+latest_marche <- marche[n,c(4,11,14,15,18,19)]
+latest_molise <- molise[n,c(4,11,14,15,18,19)]
+latest_bolzano <- bolzano[n,c(4,11,14,15,18,19)]
+latest_trento <- trento[n,c(4,11,14,15,18,19)]
+latest_piemonte <- piemonte[n,c(4,11,14,15,18,19)]
+latest_puglia <- puglia[n,c(4,11,14,15,18,19)]
+latest_sardegna <- sardegna[n,c(4,11,14,15,18,19)]
+latest_sicilia <- sicilia[n,c(4,11,14,15,18,19)]
+latest_toscana <- toscana[n,c(4,11,14,15,18,19)]
+latest_umbria <- umbria[n,c(4,11,14,15,18,19)]
+latest_v_aosta <- v_aosta[n,c(4,11,14,15,18,19)]
+latest_veneto <- veneto[n,c(4,11,14,15,18,19)]
+latest_italia <- italia[n,c(4,11,14,15,18,19)]
 latest1 <- rbind(latest_abruzzo,latest_basilicata,latest_calabria,latest_campania,latest_e_romagna,
                  latest_fv_giulia,latest_lazio,latest_liguria,latest_lombardia,latest_marche,latest_molise,
                  latest_bolzano,latest_trento,latest_piemonte,latest_puglia,latest_sardegna,latest_sicilia,
                  latest_toscana,latest_umbria,latest_v_aosta,latest_veneto,latest_italia)
-latest2 <- cbind(date[n],latest1[order(latest1$totale_casi),])
+latest2 <- cbind(italia$date[n],latest1[order(latest1$totale_casi),])
 names(latest2) <- c("Data","Regione","Totale positivi","Guariti","Deceduti","Totale casi","Tamponi effettuati")
 print(latest2)
 ############################
