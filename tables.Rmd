@@ -9,6 +9,38 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Playing with COVID-19 data - Tables
+Since the end of february 2020, shortly after my father passed away, Italy has been hit by a difficult health emergency, which seemed far distant only a few weeks before. Probably a perception increased by my being involved in my father's hilness, in experiencing his sorrow and feeling of utter impotence against it, I listened to the news on the Chinese COVID-19 epidemic with a sense of light interest, although the comments by various medical scientists interviewed by TV news bulletins somewhat were able to slip into my consciousness a sense of danger incoming, sooner or later. Sooner as it may have been it would have been a menace of little importance in the face of the monster that was inexorably taking my father's life away.
+The coronavirus pandemic, right after China, hit Italy so hard that our country was internationally perceived as (and to some extent it was effectively) unprepaired as well as guiltily responsible for the harsh consequences it has had on its population and health care system.
+As the data for the first wave shows, the epidemic hit the North of Italy, it skimmed the Centre, while it left the South mostly untouched by it.
+
+```{r, echo=FALSE}
+covid_data <- read.delim("covid_data.csv",sep=",",header=T)
+regioni_nord <- data.frame(rbind(
+  subset(covid_data,covid_data$codice_regione==1),
+  subset(covid_data,covid_data$codice_regione==2),
+  subset(covid_data,covid_data$codice_regione==3),
+  subset(covid_data,covid_data$codice_regione==5),
+  subset(covid_data,covid_data$codice_regione==6),
+  subset(covid_data,covid_data$codice_regione==7),
+  subset(covid_data,covid_data$codice_regione==8),
+  subset(covid_data,covid_data$codice_regione==21),
+  subset(covid_data,covid_data$codice_regione==22)))
+regioni_centro <- data.frame(rbind(
+  subset(covid_data,covid_data$codice_regione==9),
+  subset(covid_data,covid_data$codice_regione==10),
+  subset(covid_data,covid_data$codice_regione==11),
+  subset(covid_data,covid_data$codice_regione==12)))
+regioni_sud <- data.frame(rbind(
+  subset(covid_data,covid_data$codice_regione==13),
+  subset(covid_data,covid_data$codice_regione==14),
+  subset(covid_data,covid_data$codice_regione==15),
+  subset(covid_data,covid_data$codice_regione==16),
+  subset(covid_data,covid_data$codice_regione==17),
+  subset(covid_data,covid_data$codice_regione==18),
+  subset(covid_data,covid_data$codice_regione==19),
+  subset(covid_data,covid_data$codice_regione==20)))
+
+```
 
 ```{r, echo=FALSE}
 ###This code chunk allows me to load the data and treat dates conveniently
@@ -272,6 +304,7 @@ latest1 <- rbind(latest_abruzzo,latest_basilicata,latest_calabria,latest_campani
 latest2 <- cbind(italia$date[n],latest1[order(latest1$totale_casi),])
 names(latest2) <- c("Data","Regione","Totale positivi","Guariti","Deceduti","Totale casi","Tamponi effettuati")
 print(latest2)
+kable(latest2)
 ############################
 ############################
 ############################
