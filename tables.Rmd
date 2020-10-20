@@ -2,6 +2,9 @@
 title: "Tables"
 author: "Maurizio La Rosa"
 date: "18/10/2020"
+output:
+  word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -304,7 +307,6 @@ latest1 <- rbind(latest_abruzzo,latest_basilicata,latest_calabria,latest_campani
 latest2 <- cbind(italia$date[n],latest1[order(latest1$totale_casi),])
 names(latest2) <- c("Data","Regione","Totale positivi","Guariti","Deceduti","Totale casi","Tamponi effettuati")
 print(latest2)
-kable(latest2)
 ############################
 ############################
 ############################
