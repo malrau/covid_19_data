@@ -7,7 +7,10 @@ knit: (function(input_file, encoding) {
   rmarkdown::render(input_file,
  encoding=encoding,
  output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
-output: html_document
+output:
+  html_document:
+    theme: flatly
+    highlight: pygments
 ---
 
 ```{r setup, include=FALSE}
@@ -28,7 +31,6 @@ Here I will introduce the data When you click the **Knit** button a document wil
 covid_data <- read.delim("covid_data.csv",sep=",",header=T)
 covid_data$date <- as.Date(covid_data$date)
 regions <- levels(covid_data$denominazione_regione)
-
 ```
 
 Then I will build tables and plots that can be found in the appropriate tabs.

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Maurizio La Rosa" />
+
+
+<title>Looking at what matters the most</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Playing with COVID-19 data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tables.html">Updated tables Protezione civile style</a>
+</li>
+<li>
+  <a href="plots.html">Various plots</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Looking at what matters the most</h1>
+<h4 class="author">Maurizio La Rosa</h4>
+<h4 class="date">14/11/2020</h4>
+
+</div>
+
+
+<div id="the-problem-of-the-data" class="section level1">
+<h1>The problem of the data</h1>
+<p>The most problematic issue about the way the Italian government has decided to present the data about the evolution of the pandemic is that the data themselves were (and to a great extent still are) not accurate. This fact has mislead the perception of the health emergency by the public and has made it difficult to develop a rational way of fighting it, even on the account of the institutions. It alsa has determined that very different situations have been treated as if they were the same. The problem of the (missing) accuracy of the data relates to different aspects of the data collection. While I try to show the most obvious, I will certainly miss arguments that are less obvious:</p>
+<ul>
+<li>It is fairly clear that the most effective way of saying if a person has been infected is to test her. Although straightforward, this simple fact clashes with the harsh reality that there can never be enough tests to be performed daily by the healthcare system. This has been true during the first wave, when Italy had not enough tests available, but it remains true today, simply because the healthcare system cannot afford to perform a large amount of tests, in any case. What has greatly changed between the first and the second wave is the capacity to test: this has been greatly increased</li>
+</ul>
+<p><img src="02_matters_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<table>
+<caption>Mean daily tests in the first thirty days of the two waves</caption>
+<thead>
+<tr class="header">
+<th align="right">Mean.first.wave</th>
+<th align="right">Mean.second.wave</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">10671</td>
+<td align="right">124720</td>
+</tr>
+</tbody>
+</table>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0    62.0   132.0   330.2   555.0  1662.0</code></pre>
+<p><img src="02_matters_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<table>
+<caption>Variability in mean daily tests in the first thirty days of the two waves</caption>
+<thead>
+<tr class="header">
+<th align="right">First.wave</th>
+<th align="right">Second.wave</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">481</td>
+<td align="right">6083</td>
+</tr>
+<tr class="even">
+<td align="right">691</td>
+<td align="right">5949</td>
+</tr>
+</tbody>
+</table>
+<pre><code>## Warning in matrix(diff(covid_data$totale_casi)/diff(covid_data$tamponi), : data
+## length [6357] is not a sub-multiple or multiple of the number of rows [289]
+
+## Warning in matrix(diff(covid_data$totale_casi)/diff(covid_data$tamponi), : data
+## length [6357] is not a sub-multiple or multiple of the number of rows [289]</code></pre>
+<p><img src="02_matters_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="02_matters_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p>regioni_nord &lt;- data.frame(rbind( subset(covid_data,covid_data<span class="math inline">\(codice_regione==1),  subset(covid_data,covid_data\)</span>codice_regione==2), subset(covid_data,covid_data<span class="math inline">\(codice_regione==3),  subset(covid_data,covid_data\)</span>codice_regione==5), subset(covid_data,covid_data<span class="math inline">\(codice_regione==6),  subset(covid_data,covid_data\)</span>codice_regione==7), subset(covid_data,covid_data<span class="math inline">\(codice_regione==8),  subset(covid_data,covid_data\)</span>codice_regione==21), subset(covid_data,covid_data<span class="math inline">\(codice_regione==22))) regioni_centro &lt;- data.frame(rbind(  subset(covid_data,covid_data\)</span>codice_regione==9), subset(covid_data,covid_data<span class="math inline">\(codice_regione==10),  subset(covid_data,covid_data\)</span>codice_regione==11), subset(covid_data,covid_data<span class="math inline">\(codice_regione==12))) regioni_sud &lt;- data.frame(rbind(  subset(covid_data,covid_data\)</span>codice_regione==13), subset(covid_data,covid_data<span class="math inline">\(codice_regione==14),  subset(covid_data,covid_data\)</span>codice_regione==15), subset(covid_data,covid_data<span class="math inline">\(codice_regione==16),  subset(covid_data,covid_data\)</span>codice_regione==17), subset(covid_data,covid_data<span class="math inline">\(codice_regione==18),  subset(covid_data,covid_data\)</span>codice_regione==19), subset(covid_data,covid_data$codice_regione==20)))</p>
+<pre><code>
+</code></pre>
+<div id="data-regione-totale-positivi-guariti-deceduti" class="section level2">
+<h2>Data Regione Totale positivi Guariti Deceduti</h2>
+</div>
+<div id="molise-2526-2711-144" class="section level2">
+<h2>4046 2020-12-08 Molise 2526 2711 144</h2>
+</div>
+<div id="valle-daosta-870-5557-339" class="section level2">
+<h2>867 2020-12-08 Valle d’Aosta 870 5557 339</h2>
+</div>
+<div id="basilicata-6348-2576-181" class="section level2">
+<h2>4913 2020-12-08 Basilicata 6348 2576 181</h2>
+</div>
+<div id="p.a.-trento-2457-14241-719" class="section level2">
+<h2>6358 2020-12-08 P.A. Trento 2457 14241 719</h2>
+</div>
+<div id="calabria-10366-8141-360" class="section level2">
+<h2>5202 2020-12-08 Calabria 10366 8141 360</h2>
+</div>
+<div id="sardegna-15160-9075-543" class="section level2">
+<h2>5780 2020-12-08 Sardegna 15160 9075 543</h2>
+</div>
+<div id="umbria-5746-19121-477" class="section level2">
+<h2>2890 2020-12-08 Umbria 5746 19121 477</h2>
+</div>
+<div id="p.a.-bolzano-10883-14078-594" class="section level2">
+<h2>6069 2020-12-08 P.A. Bolzano 10883 14078 594</h2>
+</div>
+<div id="abruzzo-16449-13267-994" class="section level2">
+<h2>3757 2020-12-08 Abruzzo 16449 13267 994</h2>
+</div>
+<div id="marche-13821-17655-1355" class="section level2">
+<h2>3179 2020-12-08 Marche 13821 17655 1355</h2>
+</div>
+<div id="friuli-venezia-giulia-14877-20518-1089" class="section level2">
+<h2>1734 2020-12-08 Friuli Venezia Giulia 14877 20518 1089</h2>
+</div>
+<div id="liguria-9745-41865-2563" class="section level2">
+<h2>2023 2020-12-08 Liguria 9745 41865 2563</h2>
+</div>
+<div id="puglia-47312-17186-1759" class="section level2">
+<h2>4624 2020-12-08 Puglia 47312 17186 1759</h2>
+</div>
+<div id="sicilia-39555-32171-1829" class="section level2">
+<h2>5491 2020-12-08 Sicilia 39555 32171 1829</h2>
+</div>
+<div id="toscana-26024-80461-2933" class="section level2">
+<h2>2601 2020-12-08 Toscana 26024 80461 2933</h2>
+</div>
+<div id="lazio-94009-36418-2701" class="section level2">
+<h2>3468 2020-12-08 Lazio 94009 36418 2701</h2>
+</div>
+<div id="emilia-romagna-66522-64480-6268" class="section level2">
+<h2>2312 2020-12-08 Emilia-Romagna 66522 64480 6268</h2>
+</div>
+<div id="campania-98765-66604-2064" class="section level2">
+<h2>4335 2020-12-08 Campania 98765 66604 2064</h2>
+</div>
+<div id="veneto-79748-86822-4374" class="section level2">
+<h2>1445 2020-12-08 Veneto 79748 86822 4374</h2>
+</div>
+<div id="piemonte-64513-108392-6746" class="section level2">
+<h2>578 2020-12-08 Piemonte 64513 108392 6746</h2>
+</div>
+<div id="lombardia-111829-297290-23208" class="section level2">
+<h2>1156 2020-12-08 Lombardia 111829 297290 23208</h2>
+</div>
+<div id="italia-737525-958629-61240" class="section level2">
+<h2>289 2020-12-08 Italia 737525 958629 61240</h2>
+</div>
+<div id="totale-casi-tamponi-effettuati" class="section level2">
+<h2>Totale casi Tamponi effettuati</h2>
+</div>
+<div id="section" class="section level2">
+<h2>4046 5381 99517</h2>
+</div>
+<div id="section-1" class="section level2">
+<h2>867 6766 56474</h2>
+</div>
+<div id="section-2" class="section level2">
+<h2>4913 9105 162939</h2>
+</div>
+<div id="section-3" class="section level2">
+<h2>6358 17417 398913</h2>
+</div>
+<div id="section-4" class="section level2">
+<h2>5202 18867 384990</h2>
+</div>
+<div id="section-5" class="section level2">
+<h2>5780 24778 403381</h2>
+</div>
+<div id="section-6" class="section level2">
+<h2>2890 25344 442893</h2>
+</div>
+<div id="section-7" class="section level2">
+<h2>6069 25555 325198</h2>
+</div>
+<div id="section-8" class="section level2">
+<h2>3757 30710 444065</h2>
+</div>
+<div id="section-9" class="section level2">
+<h2>3179 32831 438149</h2>
+</div>
+<div id="section-10" class="section level2">
+<h2>1734 36484 778693</h2>
+</div>
+<div id="section-11" class="section level2">
+<h2>2023 54173 631209</h2>
+</div>
+<div id="section-12" class="section level2">
+<h2>4624 66257 853140</h2>
+</div>
+<div id="section-13" class="section level2">
+<h2>5491 73555 1040198</h2>
+</div>
+<div id="section-14" class="section level2">
+<h2>2601 109418 1661394</h2>
+</div>
+<div id="section-15" class="section level2">
+<h2>3468 133128 2384802</h2>
+</div>
+<div id="section-16" class="section level2">
+<h2>2312 137270 2248912</h2>
+</div>
+<div id="section-17" class="section level2">
+<h2>4335 167433 1721240</h2>
+</div>
+<div id="section-18" class="section level2">
+<h2>1445 170944 2910230</h2>
+</div>
+<div id="section-19" class="section level2">
+<h2>578 179651 1687411</h2>
+</div>
+<div id="section-20" class="section level2">
+<h2>1156 432327 4312365</h2>
+</div>
+<div id="section-21" class="section level2">
+<h2>289 1757394 23386113</h2>
+<p>```</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

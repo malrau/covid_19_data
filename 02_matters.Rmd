@@ -1,21 +1,97 @@
 ---
-title: "Tables"
+title: "Looking at what matters the most"
 author: "Maurizio La Rosa"
-date: "20/10/2020"
-output: pdf_document
+date: "14/11/2020"
+output: 
+  html_document: 
+    theme: flatly
+    highlight: pygments
+    df_print: paged
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,fig.dim=c(5,5))
+options(scipen=999)
+setwd("/Users/mau/github/covid_19_data")
 ```
 
-## Playing with COVID-19 data - Tables
-Since the end of february 2020, shortly after my father passed away, Italy has been hit by a difficult health emergency, which seemed far distant only a few weeks before. Probably a perception increased by my being involved in my father's hilness, in experiencing his sorrow and feeling of utter impotence against it, I listened to the news on the Chinese COVID-19 epidemic with a sense of light interest, although the comments by various medical scientists interviewed by TV news bulletins somewhat were able to slip into my consciousness a sense of danger incoming, sooner or later. Sooner as it may have been it would have been a menace of little importance in the face of the monster that was inexorably taking my father's life away.
-The coronavirus pandemic, right after China, hit Italy so hard that our country was internationally perceived as (and to some extent it was effectively) unprepaired as well as guiltily responsible for the harsh consequences it has had on its population and health care system.
-As the data for the first wave shows, the epidemic hit the North of Italy, it skimmed the Centre, while it left the South mostly untouched by it.
+```{r, echo=FALSE}
+options(scipen=999)
+setwd("/Users/mau/github/covid_19_data")
+covid_data <- read.delim("covid_data.csv",sep=",",header=T)
+date_matrix <- matrix(covid_data$date,ncol=22)
+date <- as.Date(date_matrix[,1])
+tamponi_matrix <- matrix(covid_data$tamponi,ncol=22)
+tamponi_ita <- diff(tamponi_matrix[,1])
+```
+
+# The problem of the data
+
+The most problematic issue about the way the Italian government has decided to present the data about the evolution of the pandemic is that the data themselves were (and to a great extent still are) not accurate. This fact has mislead the perception of the health emergency by the public and has made it difficult to develop a rational way of fighting it, even on the account of the institutions. It alsa has determined that very different situations have been treated as if they were the same. The problem of the (missing) accuracy of the data relates to different aspects of the data collection. While I try to show the most obvious, I will certainly miss arguments that are less obvious:
+
+- It is fairly clear that the most effective way of saying if a person has been infected is to test her. Although straightforward, this simple fact clashes with the harsh reality that there can never be enough tests to be performed daily by the healthcare system. This has been true during the first wave, when Italy had not enough tests available, but it remains true today, simply because the healthcare system cannot afford to perform a large amount of tests, in any case. What has greatly changed between the first and the second wave is the capacity to test: this has been greatly increased 
 
 ```{r, echo=FALSE}
-covid_data <- read.delim("covid_data.csv",sep=",",header=T)
+#Function that allows me to customize the plot region
+plot_region <- function() {
+  points(0, 0, pch=16, cex=1e6, col="#FFFFFF") #FFFFFF: white
+  #grid(NA,ny=NULL,col="#EAF2F3",lty=1,lwd=2)
+}
+```
+
+```{r, echo=FALSE}
+ymarks <- c(10000,40000,80000,120000,160000,200000,240000,280000)
+ylabels <- c("10","40","80","120","160","200","240","280")
+xmarks <- date[c(1,21,82,143,205,266,289)] #,"2020-12-15"
+xlabels <- c("24 Feb","15 Mar","15 Mag","15 Lug","15 Set","15 Nov","08 Dic")
+
+par(bg="#EAF2F3")
+plot(c(0,tamponi_ita)~date,type="l",xaxt="n",yaxt="n",xlab="",ylab="",bty="n",main="Tamponi giornalieri")
+title(xlab="Mese",ylab="Numero di tamponi (migliaia)",cex.lab=.9,col.lab="#696969",panel.first=plot_region())
+axis.Date(1,at=xmarks,labels=xlabels,cex.axis=.8,col="#696969",col.axis="#696969",las=2)
+axis(2,tick=TRUE,at=ymarks,labels=ylabels,las=2,cex.axis=.8,col="#696969",col.axis="#696969")
+abline(h=ymarks,col="#EAF2F3",panel.first=plot_region()) #v=xmarks,
+points(c(0,tamponi_ita)~date,type="l",col="#8877AACC")
+mean_tamp <- data.frame("Mean first wave"=round(mean(tamponi_ita[1:30])),"Mean second wave"=round(mean(tamponi_ita[214:244])))
+knitr::kable(mean_tamp,caption="Mean daily tests in the first thirty days of the two waves")
+summary(diff(tamponi_matrix)[15,2:22])
+hist(diff(tamponi_matrix)[15,2:22])
+means_tamp_reg_fw <- colSums(diff(tamponi_matrix)[1:29,])/29
+means_fw <- mean(means_tamp_reg_fw[2:22])
+sd_fw <- sd(means_tamp_reg_fw[2:22])
+means_tamp_reg_sw <- colSums(diff(tamponi_matrix)[214:243,])/29
+means_sw <- mean(means_tamp_reg_sw[2:22])
+sd_sw <- sd(means_tamp_reg_sw[2:22])
+var_tamp <- data.frame("First wave"=round(c(means_fw,sd_fw)),"Second wave"=round(c(means_sw,sd_sw)))
+knitr::kable(var_tamp,caption="Variability in mean daily tests in the first thirty days of the two waves")
+```
+
+```{r, echo=FALSE}
+quota_positivi_nord <- rowSums(matrix(c(covid_data$nuovi_positivi[1],diff(covid_data$totale_casi))/c(covid_data$tamponi[1],diff(covid_data$tamponi)),ncol=22)[,c(2:8,21,22)])
+quota_positivi_centro <- rowSums(matrix(diff(covid_data$totale_casi)/diff(covid_data$tamponi),ncol=22)[,9:12])
+quota_positivi_sud <- rowSums(matrix(diff(covid_data$totale_casi)/diff(covid_data$tamponi),ncol=22)[,13:20])
+
+plot(quota_positivi_nord,type="l",col="blue")
+lines(quota_positivi_centro,col="green")
+lines(quota_positivi_sud,col="orange")
+
+terapia_int_nord <- rowSums(matrix(covid_data$terapia_intensiva,ncol=22)[,c(2:8,21,22)])
+terapia_int_centro <- rowSums(matrix(covid_data$terapia_intensiva,ncol=22)[,9:12])
+terapia_int_sud <- rowSums(matrix(covid_data$terapia_intensiva,ncol=22)[,13:20])
+
+plot(terapia_int_nord,type="l",col="blue")
+lines(terapia_int_centro,col="green")
+lines(terapia_int_sud,col="orange")
+
+deceduti_nord <- rowSums(matrix(covid_data$deceduti,ncol=22)[,c(2:8,21,22)])
+deceduti_centro <- rowSums(matrix(covid_data$deceduti,ncol=22)[,9:12])
+deceduti_sud <- rowSums(matrix(covid_data$deceduti,ncol=22)[,13:20])
+
+guariti_nord <- rowSums(matrix(covid_data$dimessi_guariti,ncol=22)[,c(2:8,21,22)])
+guariti_centro <- rowSums(matrix(covid_data$dimessi_guariti,ncol=22)[,9:12])
+guariti_sud <- rowSums(matrix(covid_data$dimessi_guariti,ncol=22)[,13:20])
+```
+
 regioni_nord <- data.frame(rbind(
   subset(covid_data,covid_data$codice_regione==1),
   subset(covid_data,covid_data$codice_regione==2),
@@ -40,7 +116,6 @@ regioni_sud <- data.frame(rbind(
   subset(covid_data,covid_data$codice_regione==18),
   subset(covid_data,covid_data$codice_regione==19),
   subset(covid_data,covid_data$codice_regione==20)))
-
 ```
 
 ```{r, echo=FALSE}

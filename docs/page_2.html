@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Maurizio La Rosa" />
+
+
+<title>First (naive) look at the data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Playing with COVID-19 data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tables.html">Updated tables Protezione civile style</a>
+</li>
+<li>
+  <a href="plots.html">Various plots</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">First (naive) look at the data</h1>
+<h4 class="author">Maurizio La Rosa</h4>
+<h4 class="date">20/10/2020</h4>
+
+</div>
+
+
+<div id="playing-with-covid-19-data" class="section level2">
+<h2>Playing with COVID-19 data</h2>
+<p>Since the end of February 2020, shortly after my father passed away, Italy has been hit by a difficult health emergency, which seemed far distant only a few weeks before. Probably a perception increased by my being involved in my father’s illness, in experiencing his sorrow and feeling of utter impotence against it, I listened to the news on the Chinese COVID-19 epidemic with a sense of light interest, although the comments by various medical scientists interviewed by TV news bulletins somewhat were able to slip into my consciousness a sense of danger incoming, sooner or later. Sooner as it may have been it would have been a menace of little importance in the face of the monster that was inexorably taking my father’s life away. The coronavirus pandemic, right after China, hit Italy so hard that our country was internationally perceived as (and to some extent it was effectively) <strong><em>unprepared</em></strong> as well as guiltily responsible for the harsh consequences it has had on its population and health care system. As the data for the first wave shows, the epidemic hit the North of Italy, it skimmed the Centre, while it left the South mostly untouched by it.</p>
+<pre><code>##  [1] &quot;date&quot;                         &quot;stato&quot;                       
+##  [3] &quot;codice_regione&quot;               &quot;denominazione_regione&quot;       
+##  [5] &quot;lat&quot;                          &quot;long&quot;                        
+##  [7] &quot;ricoverati_con_sintomi&quot;       &quot;terapia_intensiva&quot;           
+##  [9] &quot;totale_ospedalizzati&quot;         &quot;isolamento_domiciliare&quot;      
+## [11] &quot;totale_positivi&quot;              &quot;variazione_totale_positivi&quot;  
+## [13] &quot;nuovi_positivi&quot;               &quot;dimessi_guariti&quot;             
+## [15] &quot;deceduti&quot;                     &quot;casi_da_sospetto_diagnostico&quot;
+## [17] &quot;casi_da_screening&quot;            &quot;totale_casi&quot;                 
+## [19] &quot;tamponi&quot;                      &quot;casi_testati&quot;                
+## [21] &quot;mortalità&quot;                    &quot;nuovi_tamponi&quot;               
+## [23] &quot;decreto_legge&quot;                &quot;dpcm1&quot;                       
+## [25] &quot;dpcm2&quot;                        &quot;dpcm3&quot;                       
+## [27] &quot;dpcm4&quot;                        &quot;dpcm5&quot;                       
+## [29] &quot;dpcm6&quot;                        &quot;dpcm7&quot;                       
+## [31] &quot;dpcm8&quot;                        &quot;dpcm9&quot;                       
+## [33] &quot;pre_esodo&quot;                    &quot;mado&quot;                        
+## [35] &quot;esodo1&quot;                       &quot;esodo2&quot;                      
+## [37] &quot;esodo3&quot;</code></pre>
+<pre><code>##  [1] &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot; &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot;
+## [16] &quot;16&quot; &quot;17&quot; &quot;18&quot; &quot;19&quot; &quot;20&quot; &quot;21&quot; &quot;22&quot;</code></pre>
+<p>A naive look at the open data by the Italian Protezione Civile would show the increase in the total amount of COVID-19 cases registered by the Italian health authorities since the end of February 2020. We already know that these information are misleading. Researchers estimated that the actual cumulative number of contagions is much larger, since testing has been limited to people showing symptoms caused by the infection. We have come to know that the majority of people infected by the virus show no symptoms at all. Moreover, the capacity to test was much smaller during the first wave than today.</p>
+<p><img src="page_2_files/figure-html/unnamed-chunk-2-1.png" width="480" /> <br> Although it seems quite fair to talk about a second wave spreading since autumn 2020, its real impact as compared to the first wave of the first part of the year remains mostly unknown. So one should not scare too much in seeing how much higher and steeper the curve of the new cases looks. We know that we are able to perform a much more massive amount of tests today than we were in march or april. Perhaps the two waves would have looked more similar had we performed the same amount of tests during the first wave. A naive approximation can be offered by the share of new cases over the number of tests, which will be shown later.</p>
+<p>If we limit our quick look of the data to 30 days since the beginning of the two waves we might be able to see some differences. The most striking one, given that the difference in magnitude is mostly due to the increased number of tests, is that now the pandemic looks as a phenomenon involving the whole peninsula. The Centre and the South seems involved as well as the North.</p>
+<p><img src="page_2_files/figure-html/unnamed-chunk-3-1.png" width="480" /></p>
+<p>Now I would like to show a small exercise, where I compare the start of the first wave to an exponential computed elevating the series [1-30] to the power of 3.25. We see that the computed exponential fits quite well the actual curve of the COVID-19 cases in the North of Italy up to the end of March.</p>
+<p><img src="page_2_files/figure-html/unnamed-chunk-4-1.png" width="480" /></p>
+<p>Limiting our observations to the North of Italy, we see that keeping the exponential allure would have resulted in a steeper curve, hence in a large amount of cases in a short period.</p>
+<p><img src="page_2_files/figure-html/unnamed-chunk-5-1.png" width="480" /></p>
+<pre><code>## R version 4.0.2 (2020-06-22)
+## Platform: x86_64-apple-darwin17.0 (64-bit)
+## Running under: macOS Catalina 10.15.7
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] compiler_4.0.2  magrittr_1.5    tools_4.0.2     htmltools_0.4.0
+##  [5] yaml_2.2.1      Rcpp_1.0.4.6    stringi_1.4.6   rmarkdown_2.3  
+##  [9] knitr_1.29      stringr_1.4.0   xfun_0.15       digest_0.6.25  
+## [13] rlang_0.4.5     evaluate_0.14</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
