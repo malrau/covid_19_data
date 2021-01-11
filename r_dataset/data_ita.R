@@ -6,15 +6,16 @@ setwd("~/github/covid_19_data")
 covid_ita1 <- read.delim("dati-andamento-nazionale/dpc-covid19-ita-andamento-nazionale.csv",sep=",",header=T) #This is the file containing the data for the whole country. I use it as data frame
 new_columns <- data.frame(codice_regione=0,denominazione_regione="Italia",lat=41.8719,long=12.5674) #These columns are present in the file containing the data for the Italian regions.
 covid_ita2 <- cbind(covid_ita1,new_columns) #I attach them here too, because otherwise I would have problems merging the two datasets
-covid_ita3 <- covid_ita2[,c(1,2,18,19,20,21,3,4,5,6,7,8,9,10,11,12,13,14,15,16)] #Here I put the columns in the correct order (the same order as for the regional data frame) and I remove the new variable "note"
+covid_ita3 <- covid_ita2[,c(1,2,21,22,23,24,3,4,5,6,7,8,9,10,11,12,13,14,15,16)] #Here I put the columns in the correct order (the same order as for the regional data frame) and I remove the new variable "note"
 str(covid_ita3) #the "data" and "stato" variables are factors. I need to convert the "data" variable in date format.
 date <- as.Date(covid_ita1$data,format="%Y-%m-%d")
 covid_ita4 <- covid_ita3[,2:(length(covid_ita3))] #I remove the old date variable from the data frame
 covid_ita <- cbind(date,covid_ita4) #I replace the date variable with the new one in the correct format
+str(covid_ita)
 plot(covid_ita$date,covid_ita$totale_casi,type="l",cex.axis=.7,xlab="Data",ylab="Totale casi in Italia")
 covid_reg1 <- read.delim("dati-regioni/dpc-covid19-ita-regioni.csv",sep=",",header=T) #Here I load the regional data frame. I already know I have to substitute the date variable with the one in date format.
 covid_reg2 <- covid_reg1[order(covid_reg1$codice_regione),] #Since the regional data are ordered by date, not region code, before merging the two data frames I have to change the way in which the regional data are ordered
-covid_reg3 <- covid_reg2[,2:(length(covid_reg1)-1)] #Here I remove the date and notes variables, same as I did for the Italian data
+covid_reg3 <- covid_reg2[,2:(length(covid_reg1)-4)] #Here I remove the date and notes variables, same as I did for the Italian data
 covid_reg <- cbind(date,covid_reg3)
 names(covid_ita)
 names(covid_reg)

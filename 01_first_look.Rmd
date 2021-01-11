@@ -42,23 +42,36 @@ nuovi_positivi_nord <- rowSums(matrix(covid_data$nuovi_positivi,ncol=22)[,c(2:8,
 nuovi_positivi_centro <- rowSums(matrix(covid_data$nuovi_positivi,ncol=22)[,9:12])
 nuovi_positivi_sud <- rowSums(matrix(covid_data$nuovi_positivi,ncol=22)[,13:20])
 
-par(mfrow=c(2,1),pin=c(4,1))
+#Function that allows me to customize the plot region
+plot_region <- function() {
+  points(0, 0, pch=16, cex=1e6, col="#FFFFFF") #FFFFFF: white
+  #grid(NA,ny=NULL,col="#EAF2F3",lty=1,lwd=2)
+}
+
+par(mfrow=c(2,1),pin=c(4,1),bg="#EAF2F3")
 
 #plot totale casi
-marks <- c(100000,250000,450000,600000)
-plot(totale_casi_nord~date,type="l",col="blue",main="Totale casi da coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
-axis(2,at=marks,labels=marks,las=2)
+marks <- c(100000,400000,800000,1200000)
+plot(totale_casi_nord~date,type="l",main="Totale casi da coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
+title(panel.first=plot_region())
+axis(2,at=marks,labels=marks,las=2,cex.axis=.8)
+abline(h=marks,col="#EAF2F3",panel.first=plot_region()) #v=xmarks,
+points(totale_casi_nord~date,type="l",col="blue")
 lines(totale_casi_centro~date,col="green")
 lines(totale_casi_sud~date,col="orange")
 
+
 #plot nuovi positivi
 marks2 <- c(5000,15000,25000)
-plot(nuovi_positivi_nord~date,type="l",col="blue",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
+plot(nuovi_positivi_nord~date,type="l",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
+title(panel.first=plot_region())
 axis(2,at=marks2,labels=marks2,las=2)
+abline(h=marks2,col="#EAF2F3") #v=xmarks,
+points(nuovi_positivi_nord~date,type="l",col="blue")
 lines(nuovi_positivi_centro~date,col="green")
 lines(nuovi_positivi_sud~date,col="orange")
 ```
-<br>
+
 Although it seems quite fair to talk about a second wave spreading since autumn 2020, its real impact as compared to the first wave of the first part of the year remains mostly unknown. So one should not scare too much in seeing how much higher and steeper the curve of the new cases looks. We know that we are able to perform a much more massive amount of tests today than we were in march or april. Perhaps the two waves would have looked more similar had we performed the same amount of tests during the first wave. A naive approximation can be offered by the share of new cases over the number of tests, which will be shown later.
 
 If we limit our quick look of the data to 30 days since the beginning of the two waves we might be able to see some differences. The most striking one, given that the difference in magnitude is mostly due to the increased number of tests, is that now the pandemic looks as a phenomenon involving the whole peninsula. The Centre and the South seems involved as well as the North.

@@ -5,13 +5,13 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Updated tables Protezione civile style"
-      href: tables.html
-    - text: "Various plots"
-      href: plots.html
+    - text: "First (naive) look at the data"
+      href: 01_first_look.html
+    - text: "Looking at what matters the most"
+      href: 02_matters.html
 output:
 html_document:
   toc: true
   toc_float: true
-  highlight: textmate
-  theme: superhero
+  highlight: pygments
+  theme: flatly
