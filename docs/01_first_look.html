@@ -309,14 +309,14 @@ $(document).ready(function () {
 <pre><code>##  [1] &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot; &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot;
 ## [16] &quot;16&quot; &quot;17&quot; &quot;18&quot; &quot;19&quot; &quot;20&quot; &quot;21&quot; &quot;22&quot;</code></pre>
 <p>A naive look at the open data by the Italian Protezione Civile would show the increase in the total amount of COVID-19 cases registered by the Italian health authorities since the end of February 2020. We already know that these information are misleading. Researchers estimated that the actual cumulative number of contagions is much larger, since testing has been limited to people showing symptoms caused by the infection. We have come to know that the majority of people infected by the virus show no symptoms at all. Moreover, the capacity to test was much smaller during the first wave than today.</p>
-<p><img src="01_first_look_files/figure-html/unnamed-chunk-2-1.png" width="480" /></p>
+<p><img src="01_first_look_files/figure-html/unnamed-chunk-2-1.png" width="864" /></p>
 <p>Although it seems quite fair to talk about a second wave spreading since autumn 2020, its real impact as compared to the first wave of the first part of the year remains mostly unknown. So one should not scare too much in seeing how much higher and steeper the curve of the new cases looks. We know that we are able to perform a much more massive amount of tests today than we were in march or april. Perhaps the two waves would have looked more similar had we performed the same amount of tests during the first wave. A naive approximation can be offered by the share of new cases over the number of tests, which will be shown later.</p>
 <p>If we limit our quick look of the data to 30 days since the beginning of the two waves we might be able to see some differences. The most striking one, given that the difference in magnitude is mostly due to the increased number of tests, is that now the pandemic looks as a phenomenon involving the whole peninsula. The Centre and the South seems involved as well as the North.</p>
-<p><img src="01_first_look_files/figure-html/unnamed-chunk-3-1.png" width="480" /></p>
+<p><img src="01_first_look_files/figure-html/unnamed-chunk-3-1.png" width="864" /></p>
 <p>Now I would like to show a small exercise, where I compare the start of the first wave to an exponential computed elevating the series [1-30] to the power of 3.25. We see that the computed exponential fits quite well the actual curve of the COVID-19 cases in the North of Italy up to the end of March.</p>
-<p><img src="01_first_look_files/figure-html/unnamed-chunk-4-1.png" width="480" /></p>
+<p><img src="01_first_look_files/figure-html/unnamed-chunk-4-1.png" width="864" /></p>
 <p>Limiting our observations to the North of Italy, we see that keeping the exponential allure would have resulted in a steeper curve, hence in a large amount of cases in a short period.</p>
-<p><img src="01_first_look_files/figure-html/unnamed-chunk-5-1.png" width="480" /></p>
+<p><img src="01_first_look_files/figure-html/unnamed-chunk-5-1.png" width="864" /></p>
 <pre><code>## R version 4.0.3 (2020-10-10)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
 ## Running under: macOS Big Sur 10.16

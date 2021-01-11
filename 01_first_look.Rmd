@@ -9,7 +9,7 @@ output:
 ---
 
 ```{r, setup, include=FALSE}
-knitr::opts_chunk$set(echo=TRUE,fig.dim=c(5,5))
+knitr::opts_chunk$set(echo=TRUE,fig.dim=c(9,5))
 ```
 
 ## Playing with COVID-19 data
@@ -52,22 +52,20 @@ par(mfrow=c(2,1),pin=c(4,1),bg="#EAF2F3")
 
 #plot totale casi
 marks <- c(100000,400000,800000,1200000)
-plot(totale_casi_nord~date,type="l",main="Totale casi da coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
-title(panel.first=plot_region())
+plot(totale_casi_nord~date,type="l",main="Totale casi da coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n",cex.axis=.8)
 axis(2,at=marks,labels=marks,las=2,cex.axis=.8)
 abline(h=marks,col="#EAF2F3",panel.first=plot_region()) #v=xmarks,
-points(totale_casi_nord~date,type="l",col="blue")
+points(totale_casi_nord~date,type="l",col="blue",panel.first=plot_region())
 lines(totale_casi_centro~date,col="green")
 lines(totale_casi_sud~date,col="orange")
 
 
 #plot nuovi positivi
 marks2 <- c(5000,15000,25000)
-plot(nuovi_positivi_nord~date,type="l",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
-title(panel.first=plot_region())
-axis(2,at=marks2,labels=marks2,las=2)
+plot(nuovi_positivi_nord~date,type="l",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n",cex.axis=.8)
+axis(2,at=marks2,labels=marks2,las=2,cex.axis=.8)
 abline(h=marks2,col="#EAF2F3") #v=xmarks,
-points(nuovi_positivi_nord~date,type="l",col="blue")
+points(nuovi_positivi_nord~date,type="l",col="blue",panel.first=plot_region())
 lines(nuovi_positivi_centro~date,col="green")
 lines(nuovi_positivi_sud~date,col="orange")
 ```
@@ -78,19 +76,21 @@ If we limit our quick look of the data to 30 days since the beginning of the two
 
 ```{r, echo=FALSE}
 
-par(mfrow=c(2,1),pin=c(4,1))
+par(mfrow=c(2,1),pin=c(4,1),bg="#EAF2F3")
 
 #plot nuovi positivi first wave
 marks <- c(1000,2500,4000,5500)
-plot(nuovi_positivi_nord[1:30]~date[1:30],type="l",col="blue",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
-axis(2,at=marks,labels=marks,las=2)
+plot(nuovi_positivi_nord[1:30]~date[1:30],type="l",col="blue",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n",cex.axis=.8)
+axis(2,at=marks,labels=marks,las=2,cex.axis=.8)
+points(nuovi_positivi_nord[1:30]~date[1:30],type="l",col="blue",panel.first=plot_region())
 lines(nuovi_positivi_centro[1:30]~date[1:30],col="green")
 lines(nuovi_positivi_sud[1:30]~date[1:30],col="orange")
 
 #plot nuovi positivi second wave
 marks2 <- c(2000,5000,8000,11000)
-plot(nuovi_positivi_nord[214:244]~date[214:244],type="l",col="blue",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n")
-axis(2,at=marks2,labels=marks2,las=2)
+plot(nuovi_positivi_nord[214:244]~date[214:244],type="l",col="blue",main="Nuovi positivi al coronavirus COVID-19 in Italia \n(per aree geografiche)",cex.main=.9,xlab="",ylab="",yaxt="n",cex.axis=.8)
+axis(2,at=marks2,labels=marks2,las=2,cex.axis=.8)
+points(nuovi_positivi_nord[214:244]~date[214:244],type="l",col="blue",panel.first=plot_region())
 lines(nuovi_positivi_centro[214:244]~date[214:244],col="green")
 lines(nuovi_positivi_sud[214:244]~date[214:244],col="orange")
 ```
@@ -99,8 +99,11 @@ lines(nuovi_positivi_sud[214:244]~date[214:244],col="orange")
 Now I would like to show a small exercise, where I compare the start of the first wave to an exponential computed elevating the series [1-30] to the power of 3.25. We see that the computed exponential fits quite well the actual curve of the COVID-19 cases in the North of Italy up to the end of March.
 
 ```{r, echo=FALSE}
+par(bg="#EAF2F3")
+
 x <- seq(1,30,1) #We assign to the vector "x" a sequence of values starting at 1 and ending at 30, separated by 1 unit. We will compute the exponential of this vector to the power of 3.25 and overlap the resulting curve over our plot
-plot(totale_casi_nord[1:30]~date[1:30],type="l",col="blue",xlab="",ylab="")
+plot(totale_casi_nord[1:30]~date[1:30],type="l",col="blue",xlab="",ylab="",las=1,cex.axis=.8)
+points(totale_casi_nord[1:30]~date[1:30],type="l",col="blue",panel.first=plot_region())
 lines(totale_casi_centro[1:30]~date[1:30],col="green")
 lines(totale_casi_sud[1:30]~date[1:30],col="orange")
 lines(x^3.25~date[1:30],col="red")
@@ -109,8 +112,11 @@ lines(x^3.25~date[1:30],col="red")
 Limiting our observations to the North of Italy, we see that keeping the exponential allure would have resulted in a steeper curve, hence in a large amount of cases in a short period.
 
 ```{r, echo=FALSE}
+par(bg="#EAF2F3")
+
 x <- seq(1,45,1)
-plot(totale_casi_nord[1:45]~date[1:45],type="l",col="blue",xlab="",ylab="")
+plot(totale_casi_nord[1:45]~date[1:45],type="l",col="blue",xlab="",ylab="",las=1,cex.axis=.8)
+points(totale_casi_nord[1:45]~date[1:45],type="l",col="blue",panel.first=plot_region())
 lines(totale_casi_centro[1:45]~date[1:45],col="green")
 lines(totale_casi_sud[1:45]~date[1:45],col="orange")
 lines(x^3.25~date[1:45],col="red")

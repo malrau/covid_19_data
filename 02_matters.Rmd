@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r, setup, include=FALSE}
-knitr::opts_chunk$set(echo=TRUE,fig.dim=c(5,5))
+knitr::opts_chunk$set(echo=TRUE,fig.dim=c(9,5))
 options(scipen=999)
 setwd("/Users/mau/github/covid_19_data")
 ```
@@ -40,22 +40,35 @@ plot_region <- function() {
 ```
 
 ```{r, echo=FALSE}
-ymarks <- c(0,10000,40000,80000,120000,160000,200000,240000,280000)
-ylabels <- c("0","10","40","80","120","160","200","240","280")
-xmarks <- date[c(1,21,82,143,205,266,320)] #,"2021-01-15"
-xlabels <- c("24 Feb","15 Mar","15 Mag","15 Lug","15 Set","15 Nov","8 Gen")
+ymarks <- c(0,40000,80000,120000,160000,200000,240000,280000)
+ylabels <- c("0","40","80","120","160","200","240","280")
+xmarks <- date[c(1,21,82,143,205,266,323)] #,"2021-01-15"
+xlabels <- c("24 Feb","15 Mar","15 Mag","15 Lug","15 Set","15 Nov","11 Gen")
 
 par(bg="#EAF2F3")
 plot(c(0,tamponi_ita)~date,ylim=c(0,max(tamponi_ita)),type="l",xaxt="n",yaxt="n",xlab="",ylab="",bty="n",main="Tamponi giornalieri")
 title(xlab="Mese",ylab="Numero di tamponi (migliaia)",cex.lab=.9,col.lab="#696969",panel.first=plot_region())
-axis.Date(1,at=xmarks,labels=xlabels,cex.axis=.8,col="#696969",col.axis="#696969",las=2)
+axis.Date(1,at=xmarks,labels=xlabels,cex.axis=.8,col="#696969",col.axis="#696969",las=1)
 axis(2,tick=TRUE,at=ymarks,labels=ylabels,las=2,cex.axis=.8,col="#696969",col.axis="#696969")
 abline(h=ymarks,col="#EAF2F3",panel.first=plot_region()) #v=xmarks,
 points(c(0,tamponi_ita)~date,type="l",col="#8877AACC")
+```
+<br>The above plot has a strange behaviour around mid december.</br>
+<br>
+*Mean daily tests in the first thirty days of the two waves*
+```{r, echo=FALSE, rows.print=1, cols.print=3}
 mean_tamp <- data.frame("Mean first wave"=round(mean(tamponi_ita[1:30])),"Mean second wave"=round(mean(tamponi_ita[214:244])))
-knitr::kable(mean_tamp,caption="Mean daily tests in the first thirty days of the two waves")
+mean_tamp
+#knitr::kable(mean_tamp,align = "c",format="simple",caption="Mean daily tests in the first thirty days of the two waves")
+```
+
+```{r, echo=FALSE}
 summary(diff(tamponi_matrix)[15,2:22])
 hist(diff(tamponi_matrix)[15,2:22],panel.first=plot_region())
+```
+<br>
+*Variability in mean daily tests in the first thirty days of the two waves*
+```{r, echo=FALSE, rows.print=3, cols.print=2}
 means_tamp_reg_fw <- colSums(diff(tamponi_matrix)[1:29,])/29
 means_fw <- mean(means_tamp_reg_fw[2:22])
 sd_fw <- sd(means_tamp_reg_fw[2:22])
@@ -63,7 +76,8 @@ means_tamp_reg_sw <- colSums(diff(tamponi_matrix)[214:243,])/29
 means_sw <- mean(means_tamp_reg_sw[2:22])
 sd_sw <- sd(means_tamp_reg_sw[2:22])
 var_tamp <- data.frame("First wave"=round(c(means_fw,sd_fw)),"Second wave"=round(c(means_sw,sd_sw)))
-knitr::kable(var_tamp,caption="Variability in mean daily tests in the first thirty days of the two waves")
+var_tamp
+#knitr::kable(var_tamp,caption="Variability in mean daily tests in the first thirty days of the two waves")
 ```
 
 ```{r, echo=FALSE}
